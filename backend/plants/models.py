@@ -49,3 +49,7 @@ class Plant(models.Model):
 
     pokon_interval = DurationField(choices = INTERVAL_CHOICES)
     last_pokon = DateTimeField()
+
+
+    def __str__(self):
+        return self.name 
