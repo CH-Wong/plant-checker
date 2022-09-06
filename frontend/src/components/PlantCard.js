@@ -9,8 +9,6 @@ let options = {
   day: "numeric", hour: "2-digit", minute: "2-digit"  
 };  
 
-// moment().tz("Netherlands/Amsterdam").format();
-
 export default class PlantCard extends React.Component {
     constructor(props) {
       super(props);

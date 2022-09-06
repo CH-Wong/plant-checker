@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import PlantCard from "./components/PlantCard";
-import data from './test-data.json'
 import axios from 'axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
