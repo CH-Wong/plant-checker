@@ -7,7 +7,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { ref, child, get } from "firebase/database";
 import { auth, database } from '@/common/config'
 
-import { PlantCard } from '@/components/PlantCard';
+import PlantCard from '@/components/plantcard';
 
 console.log(new Date().getTime() - new Date().getTime())
 
@@ -92,9 +92,6 @@ export default function Home() {
     }
 
   };
-
-
-
 
   return (
     <div className="main">

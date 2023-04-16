@@ -96,4 +96,4 @@ function PlantCard(plant:PlantData) {
   );
 };
 
-export {PlantCard}
+export default PlantCard;
