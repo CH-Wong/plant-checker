@@ -4,12 +4,10 @@ import React from 'react'
 
 // Import the functions you need from the SDKs you need
 import { setPersistence, signInWithEmailAndPassword, browserSessionPersistence, onAuthStateChanged } from "firebase/auth";
-import { child, get } from "firebase/database";
-import { auth, dbRef } from '@/common/config'
+import { child, get, ref } from "firebase/database";
+import { auth, database } from '@/common/config'
 
 import PlantCard from '@/components/plantcard';
-
-console.log(new Date().getTime() - new Date().getTime())
 
 export default function Home() {
   const [loginState, setLoginState] = React.useState(false);
@@ -26,6 +24,7 @@ export default function Home() {
         var tempPlants = Array();
 
         // Get the data from the database
+        const dbRef = ref(database);
         get(child(dbRef, `plants/`)).then((snapshot) => {
           if (snapshot.exists()) {
             // Loop through each plant and push data into tempPlants per plant
@@ -85,7 +84,7 @@ function LoginComponent(props: loginComponentProps) {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
 
-  function handleLogin(event: Event) {
+  function handleLogin(event: React.SyntheticEvent) {
     event.preventDefault();
     setPersistence(auth, browserSessionPersistence)
     .then(() => {
@@ -116,7 +115,7 @@ function LoginComponent(props: loginComponentProps) {
       <div className = "LoginScreen">
         <h1>Login</h1>
         <div>
-          <form>
+          <form onSubmit={handleLogin}>
             <label>
               <p>E-mail</p>
               <input type="text" onChange={e => setEmail(e.target.value)}/>
@@ -126,7 +125,7 @@ function LoginComponent(props: loginComponentProps) {
               <input type="password" onChange={e => setPassword(e.target.value)}/>
             </label>
             
-            <button type="submit" onClick={handleLogin}>Login</button>
+            <button type="submit">Login</button>
           </form>
           <div>{error}</div>
         </div>

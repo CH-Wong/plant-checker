@@ -15,19 +15,6 @@ type Plant = {
   sun_required: string,
 };
 
-type PlantData = {
-  plantData:{
-    name: string,
-    plant_type: string,
-    last_watered: string,
-    water_interval: number,
-    last_pokon: string,
-    pokon_interval: number,
-    sun_required: string,
-  }
-};
-
-
 function updatePlantData(plant:Plant) {
   set(ref(database, 'plants/' + plant.name), {
     plant_type: plant.plant_type,
@@ -39,6 +26,17 @@ function updatePlantData(plant:Plant) {
   });
 }
 
+type PlantData = {
+  plantData:{
+    name: string,
+    plant_type: string,
+    last_watered: string,
+    water_interval: number,
+    last_pokon: string,
+    pokon_interval: number,
+    sun_required: string,
+  }
+};
 
 function PlantCard(plant:PlantData) {
   const plantData = plant.plantData
