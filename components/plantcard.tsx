@@ -68,28 +68,25 @@ function PlantCard(plant:PlantData) {
   return (
       <div className={styles.card}>
         <h2>{plantData.name}</h2>
-        <div className={styles.row}>
-          <div className={styles.plantinfo}>{plantData.plant_type}</div>
-          <div className={styles.plantstatus}>Last Drinkies: {new Date(lastWatered).toUTCString()}</div>
+        <h3>{plantData.plant_type}</h3>
+        <div>Required Sunlight: {plantData.sun_required}</div>
+        <div>
+          <div>Last Drinkies: {new Date(lastWatered).toUTCString()}</div>
+          <div>Next Drinkies: {Math.round(nextWater/(1000*60*60*24))} days</div>
         </div>
-        <div className={styles.row}>
-          <div className={styles.plantinfo}>Required Water: Every {plantData.water_interval/(1000*60*60*24)} days</div>
-          <div className={styles.plantstatus}>Next Drinkies: {Math.round(nextWater/(1000*60*60*24))} days</div>
+
+        <div>
+          <div>Last Pokon: {new Date(lastPokon).toUTCString()}</div>
+          <div>Next Foodies: {Math.round(nextPokon/(1000*60*60*24))} days</div>
         </div>
-        <div className={styles.row}>
-          <div className={styles.plantinfo}>Required Pokon: Every {plantData.pokon_interval/(1000*60*60*24)} days</div>
-          <div className={styles.plantstatus}>Last Pokon: {new Date(lastPokon).toUTCString()}</div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.plantinfo}>Required Sunlight: {plantData.sun_required}</div>
-          <div className={styles.plantstatus}>Next Foodies: {Math.round(nextPokon/(1000*60*60*24))} days</div>
-        </div>
-        <button className = {styles.button} onClick={updateWater}>
-          I watered this plant!
+
+        <button onClick={updateWater}>
+          Water
         </button>
-        <button className = {styles.button} onClick={updatePokon}>
-          I pokon-ed this plant!
+        <button onClick={updatePokon}>
+          Pokon
         </button>
+        <div className={styles.bar} />
       </div>
   );
 };
