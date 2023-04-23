@@ -29,15 +29,14 @@ jobs:
           node-version: latest
       - run: npm ci
       - run: npm run build
-      - run: npm run export
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build_dir
-          path: ./dist
+          path: ${{ secrets.DEPLOY_SOURCE}}
 
       - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@4.3.4
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
           server: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USERNAME }}

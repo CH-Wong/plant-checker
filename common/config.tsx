@@ -20,6 +20,5 @@ const auth = getAuth(app);
 
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
-const dbRef = ref(database);
 
-export { auth, dbRef };
+export { auth, database };

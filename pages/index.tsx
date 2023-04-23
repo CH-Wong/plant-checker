@@ -3,13 +3,11 @@ import Head from 'next/head'
 import React from 'react'
 
 // Import the functions you need from the SDKs you need
-import { setPersistence, signInWithEmailAndPassword, browserSessionPersistence, onAuthStateChanged } from "firebase/auth";
-import { child, get } from "firebase/database";
-import { auth, dbRef } from '@/common/config'
+import { setPersistence, signInWithEmailAndPassword, browserSessionPersistence, onAuthStateChanged, Auth, signOut } from "firebase/auth";
+import { child, get, ref } from "firebase/database";
+import { auth, database } from '@/common/config'
 
 import PlantCard from '@/components/plantcard';
-
-console.log(new Date().getTime() - new Date().getTime())
 
 export default function Home() {
   const [loginState, setLoginState] = React.useState(false);
@@ -26,6 +24,7 @@ export default function Home() {
         var tempPlants = Array();
 
         // Get the data from the database
+        const dbRef = ref(database);
         get(child(dbRef, `plants/`)).then((snapshot) => {
           if (snapshot.exists()) {
             // Loop through each plant and push data into tempPlants per plant
@@ -65,9 +64,12 @@ export default function Home() {
       <div>
         <h1>Plant Checker v1.0.0</h1>
         <div>{plants.map((plant) => <PlantCard plantData={plant} key={plant.name}/>)}</div>
+        <LogoutComponent loginState={loginState} setLoginState={setLoginState} auth={auth}/>
       </div>
       ) : (
-        <LoginComponent loginState={false} setLoginState={setLoginState}/>
+        <div>
+          <LoginComponent loginState={loginState} setLoginState={setLoginState} auth={auth}/>
+        </div>
     )}
     </div>
   )
@@ -76,16 +78,17 @@ export default function Home() {
 type loginComponentProps = {
   loginState: boolean;
   setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
+  auth: Auth;
 }
 
 function LoginComponent(props: loginComponentProps) {
-  const {loginState, setLoginState} = props;
+  const {loginState, setLoginState, auth} = props;
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
 
-  function handleLogin(event: Event) {
+  function handleLogin(event: React.SyntheticEvent) {
     event.preventDefault();
     setPersistence(auth, browserSessionPersistence)
     .then(() => {
@@ -110,20 +113,13 @@ function LoginComponent(props: loginComponentProps) {
       setError(error.message);
     });
 
-
-
-
-
-
-
-
   }
   if (!loginState) {
     return (
       <div className = "LoginScreen">
         <h1>Login</h1>
         <div>
-          <form>
+          <form onSubmit={handleLogin}>
             <label>
               <p>E-mail</p>
               <input type="text" onChange={e => setEmail(e.target.value)}/>
@@ -133,7 +129,7 @@ function LoginComponent(props: loginComponentProps) {
               <input type="password" onChange={e => setPassword(e.target.value)}/>
             </label>
             
-            <button type="submit" onClick={handleLogin}>Login</button>
+            <button type="submit">Login</button>
           </form>
           <div>{error}</div>
         </div>
@@ -143,6 +139,35 @@ function LoginComponent(props: loginComponentProps) {
   else {
     return <div/>
   }
-
 };
 
+type logOutProps = {
+  loginState: boolean;
+  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
+  auth: Auth;
+}
+
+function LogoutComponent(props:logOutProps) {
+  const {loginState, setLoginState, auth} = props;
+
+  function handleLogout(event: React.SyntheticEvent) {
+    signOut(auth)
+    .then(() => {
+      setLoginState(false);
+    })
+    .catch((error) => {
+      console.log(error.message)
+    });
+  };
+
+  if (loginState) {
+    return (
+      <div className = "LoginScreen">
+        <button onClick={e => handleLogout(e)}>Sign-out</button>
+      </div>
+    );
+  }
+  else {
+    return <div/>
+  }
+};
