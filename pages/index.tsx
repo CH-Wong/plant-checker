@@ -3,7 +3,7 @@ import Head from 'next/head'
 import React from 'react'
 
 // Import the functions you need from the SDKs you need
-import { setPersistence, signInWithEmailAndPassword, browserSessionPersistence, onAuthStateChanged } from "firebase/auth";
+import { setPersistence, signInWithEmailAndPassword, browserSessionPersistence, onAuthStateChanged, Auth, signOut } from "firebase/auth";
 import { child, get, ref } from "firebase/database";
 import { auth, database } from '@/common/config'
 
@@ -64,9 +64,12 @@ export default function Home() {
       <div>
         <h1>Plant Checker v1.0.0</h1>
         <div>{plants.map((plant) => <PlantCard plantData={plant} key={plant.name}/>)}</div>
+        <LogoutComponent loginState={loginState} setLoginState={setLoginState} auth={auth}/>
       </div>
       ) : (
-        <LoginComponent loginState={false} setLoginState={setLoginState}/>
+        <div>
+          <LoginComponent loginState={loginState} setLoginState={setLoginState} auth={auth}/>
+        </div>
     )}
     </div>
   )
@@ -75,10 +78,11 @@ export default function Home() {
 type loginComponentProps = {
   loginState: boolean;
   setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
+  auth: Auth;
 }
 
 function LoginComponent(props: loginComponentProps) {
-  const {loginState, setLoginState} = props;
+  const {loginState, setLoginState, auth} = props;
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -137,3 +141,33 @@ function LoginComponent(props: loginComponentProps) {
   }
 };
 
+type logOutProps = {
+  loginState: boolean;
+  setLoginState: React.Dispatch<React.SetStateAction<boolean>>;
+  auth: Auth;
+}
+
+function LogoutComponent(props:logOutProps) {
+  const {loginState, setLoginState, auth} = props;
+
+  function handleLogout(event: React.SyntheticEvent) {
+    signOut(auth)
+    .then(() => {
+      setLoginState(false);
+    })
+    .catch((error) => {
+      console.log(error.message)
+    });
+  };
+
+  if (loginState) {
+    return (
+      <div className = "LoginScreen">
+        <button onClick={e => handleLogout(e)}>Sign-out</button>
+      </div>
+    );
+  }
+  else {
+    return <div/>
+  }
+};
