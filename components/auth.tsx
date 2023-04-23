@@ -19,55 +19,46 @@ function handleLogin(event: React.SyntheticEvent) {
     event.preventDefault();
     setPersistence(auth, browserSessionPersistence)
     .then(() => {
-    // Existing and future Auth states are now persisted in the current
-    // session only. Closing the window would clear any existing state even
-    // if a user forgets to sign out.
-    // ...
-    // New sign-in will be persisted with session persistence.
-    return (
-        signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-        setLoginState(true);
-        setError('');
-        })
-        .catch((error) => {
-        setLoginState(false);
-        setError(error.message);
-        })
-    )
+        return (
+            signInWithEmailAndPassword(auth, email, password)
+            .then(() => {
+            setLoginState(true);
+            setError('');
+            })
+            .catch((error) => {
+            setLoginState(false);
+            setError(error.message);
+            })
+        )
     })
     .catch((error) => {
-    setError(error.message);
+        setError(error.message);
     });
-
     }
     if (!loginState) {
         return (
-        <div className = "LoginScreen">
-            <h1>Login</h1>
             <div>
-            <form onSubmit={handleLogin}>
-                <label>
-                <p>E-mail</p>
-                <input type="text" onChange={e => setEmail(e.target.value)}/>
-                </label>
-                <label>
-                <p>Password</p>
-                <input type="password" onChange={e => setPassword(e.target.value)}/>
-                </label>
-                
-                <button type="submit">Login</button>
-            </form>
-            <div>{error}</div>
+                <form action="" className="log-in" onSubmit={handleLogin}> 
+                <h4><span>Sign-in</span></h4>
+                <p>Check-up on your plants!</p>
+                <div className="floating-label">
+                    <input placeholder="Email" type="text" name="email" id="email" onChange={e => setEmail(e.target.value)}/>
+                    <label>Email:</label>
+                </div>
+                <div className="floating-label">
+                    <input placeholder="Password" type="password" name="password" id="password" onChange={e => setPassword(e.target.value)}/>
+                    <label>Password:</label>
+                </div>
+                <div>{error}</div>
+                <button type="submit">Log in</button>
+                </form>
             </div>
-        </div>
         );
     }
     else {
         return <div/>
     }
 };
-
 
 type logOutProps = {
     loginState: boolean;
@@ -91,7 +82,7 @@ type logOutProps = {
     if (loginState) {
       return (
         <div className = "LoginScreen">
-          <button onClick={e => handleLogout(e)}>Sign-out</button>
+          <button onClick={e => handleLogout(e)}>Sign out</button>
         </div>
       );
     }
