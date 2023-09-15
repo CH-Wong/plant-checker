@@ -48,7 +48,6 @@ function removePlant(plant: Plant) {
 
 
 function PlantCard(plant:PlantData) {
-  console.log(plant)
   const plantData = plant.plantData
 
   const [nextPokon, setNextPokon] = React.useState(plantData.pokon_interval - (new Date().getTime() - new Date(plantData.last_pokon).getTime()));
