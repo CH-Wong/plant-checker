@@ -71,14 +71,14 @@ function NewPlantCard() {
             name="water_interval" 
             type="number" 
             placeholder="Water Interval (days)"
-            onChange={e=>setWaterInterval(Number(e.target.value))}
+            onChange={e=>setWaterInterval(Number(e.target.value)*1000)}
           />
 
           <input 
             name="pokon_interval" 
             type="number" 
             placeholder="Pokon Interval (days)"
-            onChange={e=>setPokonInterval(Number(e.target.value))}
+            onChange={e=>setPokonInterval(Number(e.target.value)*1000)}
           />
 
           &nbsp;
