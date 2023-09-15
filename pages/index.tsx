@@ -36,9 +36,10 @@ export default function Home() {
               plant.name = name;
               tempPlants.push(plant)
             }
+            // Sort plants with based on when they need to be watered.
+            tempPlants.sort((a, b) => new Date(b.last_watered).valueOf() - new Date(a.last_watered).valueOf());
             // Set the data to the final array to begin the refresh using React Hooks.
             setPlants(tempPlants);
-            console.log(tempPlants)
 
           } else {
             // If snapshot.exists() returns false, the data is somehow not available.
